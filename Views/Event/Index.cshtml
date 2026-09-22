@@ -1,0 +1,129 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<EventRegistrationSystem.Models.Event>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1>Upcoming Events</h1>
+        <p class="text-muted">
+            Browse and register for upcoming events.
+        </p>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+            + Create Event
+        </a>
+    }
+
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        var confirmedCount =
+            item.Registrations.Count(
+                r => r.Status ==
+                EventRegistrationSystem.Models.RegistrationStatus.Confirmed);
+
+        var remaining =
+            item.Capacity - confirmedCount;
+
+        <div class="col-md-6 col-lg-4 mb-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        @item.Title
+                    </h4>
+
+                    <p>
+                        @item.Description
+                    </p>
+
+                    <hr />
+
+                    <p>
+                        <strong>Date:</strong>
+                        @item.EventDate.ToString("dd MMM yyyy")
+                    </p>
+
+                    <p>
+                        <strong>Time:</strong>
+                        @item.StartTime.ToString(@"hh\:mm")
+                        -
+                        @item.EndTime.ToString(@"hh\:mm")
+                    </p>
+
+                    <p>
+                        <strong>Venue:</strong>
+                        @item.Venue
+                    </p>
+
+                    <p>
+                        <strong>Available Seats:</strong>
+
+                        @if (remaining > 0)
+                        {
+                            <span class="text-success">
+                                @remaining / @item.Capacity
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">
+                                Full
+                            </span>
+                        }
+                    </p>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-outline-primary">
+                        View Details
+                    </a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="btn btn-outline-secondary">
+                            Edit
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

@@ -1,0 +1,168 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model EventRegistrationSystem.Models.Event
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<h1>Edit Event</h1>
+
+<div class="row">
+
+    <div class="col-md-8">
+
+        <form asp-action="Edit" method="post">
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Title"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Title"
+                       class="form-control" />
+
+                <span asp-validation-for="Title"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Description"
+                       class="form-label">
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="5">
+                </textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Venue"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Venue"
+                       class="form-control" />
+
+                <span asp-validation-for="Venue"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="EventDate"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="EventDate"
+                           type="date"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-3 mb-3">
+
+                    <label asp-for="StartTime"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="StartTime"
+                           type="time"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-3 mb-3">
+
+                    <label asp-for="EndTime"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="EndTime"
+                           type="time"
+                           class="form-control" />
+
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Capacity"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Capacity"
+                       type="number"
+                       min="1"
+                       class="form-control" />
+
+                <span asp-validation-for="Capacity"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="RegistrationDeadline"
+                       class="form-label">
+                </label>
+
+                <input asp-for="RegistrationDeadline"
+                       type="datetime-local"
+                       class="form-control" />
+
+            </div>
+
+            <div class="form-check mb-3">
+
+                <input asp-for="IsActive"
+                       class="form-check-input" />
+
+                <label asp-for="IsActive"
+                       class="form-check-label">
+                </label>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Save Changes
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

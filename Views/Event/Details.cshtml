@@ -1,0 +1,164 @@
+﻿@model EventRegistrationSystem.Models.Event
+
+@{
+    ViewData["Title"] = "Event Details";
+
+    var confirmedCount =
+        Model.Registrations.Count(
+            r => r.Status ==
+            EventRegistrationSystem.Models.RegistrationStatus.Confirmed);
+
+    var remaining =
+        Model.Capacity - confirmedCount;
+
+    var registrationClosed =
+        DateTime.Now > Model.RegistrationDeadline ||
+        Model.EventDate.Date < DateTime.Today ||
+        !Model.IsActive;
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h1>@Model.Title</h1>
+
+                <p class="lead">
+                    @Model.Description
+                </p>
+
+                <hr />
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Date:</strong><br />
+                            @Model.EventDate.ToString("dddd, dd MMMM yyyy")
+                        </p>
+
+                        <p>
+                            <strong>Time:</strong><br />
+                            @Model.StartTime.ToString(@"hh\:mm")
+                            -
+                            @Model.EndTime.ToString(@"hh\:mm")
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Venue:</strong><br />
+                            @Model.Venue
+                        </p>
+
+                        <p>
+                            <strong>Capacity:</strong><br />
+                            @Model.Capacity people
+                        </p>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <p>
+                    <strong>Registration Deadline:</strong>
+                    @Model.RegistrationDeadline.ToString(
+                        "dd MMM yyyy HH:mm")
+                </p>
+
+                <p>
+                    <strong>Available Seats:</strong>
+
+                    @if (remaining > 0)
+                    {
+                        <span class="badge bg-success">
+                            @remaining
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            Full
+                        </span>
+                    }
+                </p>
+
+                <div class="mt-4">
+
+                    @if (!User.Identity?.IsAuthenticated ?? true)
+                    {
+                        <a asp-controller="Account"
+                           asp-action="Login"
+                           asp-route-returnUrl="@Context.Request.Path"
+                           class="btn btn-primary">
+                            Login to Register
+                        </a>
+                    }
+                    else if (User.IsInRole("User") &&
+                             remaining > 0 &&
+                             !registrationClosed)
+                    {
+                        <form asp-controller="Registrations"
+                              asp-action="Register"
+                              method="post"
+                              class="d-inline">
+
+                            <input type="hidden"
+                                   name="eventId"
+                                   value="@Model.Id" />
+
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit"
+                                    class="btn btn-success"
+                                    onclick="return confirm('Register for this event?');">
+                                Register Now
+                            </button>
+
+                        </form>
+                    }
+                    else if (registrationClosed)
+                    {
+                        <button class="btn btn-secondary"
+                                disabled>
+                            Registration Closed
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger"
+                                disabled>
+                            Event Full
+                        </button>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Registrations"
+                           asp-action="Participants"
+                           asp-route-eventId="@Model.Id"
+                           class="btn btn-outline-primary">
+                            View Participants
+                        </a>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-outline-secondary">
+                            Edit Event
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

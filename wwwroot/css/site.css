@@ -1,0 +1,38 @@
+html {
+    font-size: 14px;
+}
+
+body {
+    margin: 0;
+    background-color: #f5f7fa;
+    color: #212529;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.btn {
+    border-radius: 6px;
+}
+
+.table {
+    background-color: white;
+}
+
+.badge {
+    padding: 0.5em 0.7em;
+}
+
+footer {
+    background-color: white;
+}

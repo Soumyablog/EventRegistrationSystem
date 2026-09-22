@@ -1,0 +1,60 @@
+﻿@model EventRegistrationSystem.Models.Event
+
+@{
+    ViewData["Title"] = "Delete Event";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-7">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h2>Deactivate Event</h2>
+
+                <p>
+                    Are you sure you want to deactivate this event?
+                </p>
+
+                <div class="alert alert-warning">
+
+                    <strong>@Model.Title</strong>
+
+                    <br />
+
+                    @Model.EventDate.ToString("dd MMMM yyyy")
+
+                    <br />
+
+                    @Model.Venue
+
+                </div>
+
+                <form asp-action="Delete" method="post">
+
+                    <input type="hidden"
+                           asp-for="Id" />
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Deactivate Event
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
